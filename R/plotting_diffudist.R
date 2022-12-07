@@ -85,7 +85,12 @@ plot_distance_matrix <- function(DM, col_palette = viridis(n = 11),
       ggplot2::guides(
         fill = guide_colourbar(barheight = default_theme$legend.key.size * 10, nbin = 100)
       ) +
-      labs(x = "", y = "", fill = "distance", title = title) +
+      labs(
+        x = element_blank(), 
+        y = element_blank(), 
+        fill = "distance", 
+        title = title
+      ) +
       theme(
         panel.background = element_blank(),
         legend.position = "right",
@@ -97,7 +102,7 @@ plot_distance_matrix <- function(DM, col_palette = viridis(n = 11),
         legend.text = element_text(size = default_theme$legend.text$size * cex),
         legend.title = element_text(size = default_theme$legend.text$size * (cex + .4)),
         plot.title = element_text(size = default_theme$plot.title$size * cex),
-        )
+      )
   } else {
     p1 <- ggplot(mdf, aes(x = .data$to, y = .data$from)) +
       ggplot2::geom_tile(aes(fill = log10(.data$value))) +
@@ -106,7 +111,12 @@ plot_distance_matrix <- function(DM, col_palette = viridis(n = 11),
       ggplot2::guides(
         fill = guide_colourbar(barheight = 20, nbin = 100)
       ) +
-      labs(x = "", y = "", fill = "distance", title = title) +
+      labs(
+        x = element_blank(), 
+        y = element_blank(), 
+        fill = "distance", 
+        title = title
+      ) +
       theme(
         panel.background = element_blank(),
         legend.position = "right",
@@ -121,20 +131,20 @@ plot_distance_matrix <- function(DM, col_palette = viridis(n = 11),
       )
   }
 
-  # Dendrogram 1
-  p2 <- ggplot(ggdendro::segment(ddata_x)) +
-    ggplot2::geom_segment(aes(x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend)) +
-    ggplot2::theme_void()
-
-  # Dendrogram 2
-  p3 <- ggplot(ggdendro::segment(ddata_y)) +
-    ggplot2::geom_segment(aes(x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend)) +
-    ggplot2::scale_x_discrete(expand = c(0.02, 0.02)) +
-    ggplot2::scale_y_reverse() +
-    ggplot2::coord_flip() +
-    ggplot2::theme_void()
-
   if (show_dendro) {
+    # # Dendrogram 1
+    # p2 <- ggplot(ggdendro::segment(ddata_x)) +
+    #   ggplot2::geom_segment(aes(x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend)) +
+    #   ggplot2::theme_void()
+
+    # Dendrogram 2
+    p3 <- ggplot(ggdendro::segment(ddata_y)) +
+      ggplot2::geom_segment(aes(x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend)) +
+      ggplot2::scale_x_discrete(expand = c(0.02, 0.02)) +
+      ggplot2::scale_y_reverse() +
+      ggplot2::coord_flip() +
+      ggplot2::theme_void()
+    
     # grDevices::dev.new(width = 16, height = 9)
     if (requireNamespace("cowplot", quietly = TRUE)) {
       cowplot::plot_grid(p3, p1, align = "h", axis = "bt",
