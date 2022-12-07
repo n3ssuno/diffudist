@@ -77,7 +77,7 @@ get_laplacian <- function(g,  type = "Laplacian", weights = NULL, verbose = TRUE
   if (requireNamespace("strex", quietly = TRUE)) {
     type <- strex::match_arg(type, types, ignore_case = TRUE)
   } else {
-    type <- match.arg(toupper(type), types)
+    type <- match.arg(type, types)
   }
   if (verbose)
     cat("Evaluating the", type, "matrix\n")
@@ -207,7 +207,7 @@ get_diffusion_probability_matrix <- function(g, tau, type = "Normalized Laplacia
     )
   } else {
     tryCatch(
-      type <- type <- match.arg(toupper(type), types),
+      type <- match.arg(type, types),
       error = function(e) {
         cat(
           "ERROR! Wrong type of Laplacian, available types are:\n",
